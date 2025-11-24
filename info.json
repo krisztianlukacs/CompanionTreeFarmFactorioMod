@@ -1,0 +1,8 @@
+{
+  "name": "companion_tree_farm",
+  "version": "0.1.0",
+  "title": "Companion Tree Farm",
+  "author": "KrisLukacs",
+  "factorio_version": "2.0",
+  "dependencies": ["base >= 2.0"]
+}
