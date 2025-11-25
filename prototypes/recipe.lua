@@ -2,23 +2,27 @@ data:extend({
   {
     type = "recipe",
     name = "tree-farm-companion",
-    enabled = true,
+    enabled = false,
     ingredients = {
-      {"steel-plate", 10},
-      {"electronic-circuit", 10},
-      {"iron-gear-wheel", 5}
+      {type="item", name="steel-plate", amount=20},
+      {type="item", name="electronic-circuit", amount=20},
+      {type="item", name="iron-gear-wheel", amount=10}
     },
-    result = "tree-farm-companion"
+    results = {
+      {type="item", name="tree-farm-companion", amount=1}
+    }
   },
   {
     type = "recipe",
     name = "tree-seed",
-    enabled = true,
+    enabled = false,
+    hidden = true,
     -- pl. 1 wood -> 2 seed
     ingredients = {
-      {"wood", 1}
+      {type="item", name="wood", amount=1}
     },
-    result = "tree-seed",
-    result_count = 2
+    results = {
+      {type="item", name="tree-seed", amount=2}
+    }
   }
 })

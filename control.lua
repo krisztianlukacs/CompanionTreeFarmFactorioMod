@@ -6,8 +6,12 @@ local function get_farm_radius()
   return settings.global["companion_farm_radius"].value
 end
 
+local function is_harvesting_enabled()
+  return settings.global["companion_farm_harvesting"].value
+end
+
 local function init_globals()
-  global.companions = global.companions or {}
+  storage.companions = storage.companions or {}
 end
 
 script.on_init(init_globals)
@@ -16,16 +20,16 @@ script.on_configuration_changed(init_globals)
 -- Companion regisztrálása
 local function register_companion(entity)
   if not (entity and entity.valid) then return end
-  global.companions = global.companions or {}
-  table.insert(global.companions, { entity = entity })
+  storage.companions = storage.companions or {}
+  table.insert(storage.companions, { entity = entity })
 end
 
 local function unregister_companion(entity)
-  if not (global.companions and entity) then return end
-  for i = #global.companions, 1, -1 do
-    local c = global.companions[i]
+  if not (storage.companions and entity) then return end
+  for i = #storage.companions, 1, -1 do
+    local c = storage.companions[i]
     if not c.entity.valid or c.entity == entity then
-      table.remove(global.companions, i)
+      table.remove(storage.companions, i)
     end
   end
 end
@@ -188,18 +192,20 @@ local function process_companion(companion_data, radius)
   local surface = e.surface
   local pos = e.position
 
-  harvest_trees(surface, pos, radius, e)
+  if is_harvesting_enabled() then
+    harvest_trees(surface, pos, radius, e)
+  end
   plant_trees(surface, pos, radius, e)
 end
 
 script.on_nth_tick(TICKS_PER_CYCLE, function(event)
-  if not global.companions then return end
+  if not storage.companions then return end
   local radius = get_farm_radius()
 
-  for i = #global.companions, 1, -1 do
-    local c = global.companions[i]
+  for i = #storage.companions, 1, -1 do
+    local c = storage.companions[i]
     if not (c.entity and c.entity.valid) then
-      table.remove(global.companions, i)
+      table.remove(storage.companions, i)
     else
       process_companion(c, radius)
     end
